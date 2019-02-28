@@ -58,7 +58,6 @@ public class DefaultGearServerWebExchage implements IGearServerWebExchange {
         return this.requestBodyProcess;
     }
 
-    @Override
     public void requestBodyProcess(Function<Mono<byte[]>, Mono<byte[]>> process) {
         this.requestBodyProcess = process;
     }
@@ -68,7 +67,6 @@ public class DefaultGearServerWebExchage implements IGearServerWebExchange {
         return this.requestHeadProcess;
     }
 
-    @Override
     public void requestHeadProcess(Function<HttpHeaders, HttpHeaders> process) {
         this.requestHeadProcess = process;
     }
@@ -78,7 +76,6 @@ public class DefaultGearServerWebExchage implements IGearServerWebExchange {
         return this.responseBodyProcess;
     }
 
-    @Override
     public void responseBodyProcess(Function<Mono<byte[]>, Mono<byte[]>> process) {
         this.responseBodyProcess = process;
     }
@@ -88,7 +85,6 @@ public class DefaultGearServerWebExchage implements IGearServerWebExchange {
         return this.responseHeadProcess;
     }
 
-    @Override
     public void responseHeadProcess(Function<HttpHeaders, HttpHeaders> process) {
         this.responseHeadProcess = process;
     }

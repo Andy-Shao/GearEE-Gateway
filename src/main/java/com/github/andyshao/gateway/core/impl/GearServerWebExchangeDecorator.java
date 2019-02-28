@@ -44,18 +44,8 @@ public class GearServerWebExchangeDecorator implements IGearServerWebExchange {
     }
 
     @Override
-    public void requestBodyProcess(Function<Mono<byte[]>, Mono<byte[]>> process) {
-        getDelegate().requestBodyProcess(process);
-    }
-
-    @Override
     public Function<HttpHeaders, HttpHeaders> requestHeadProcess() {
         return getDelegate().requestHeadProcess();
-    }
-
-    @Override
-    public void requestHeadProcess(Function<HttpHeaders, HttpHeaders> process) {
-        getDelegate().requestHeadProcess(process);
     }
 
     @Override
@@ -64,18 +54,8 @@ public class GearServerWebExchangeDecorator implements IGearServerWebExchange {
     }
 
     @Override
-    public void responseBodyProcess(Function<Mono<byte[]>, Mono<byte[]>> process) {
-        getDelegate().responseBodyProcess(process);
-    }
-
-    @Override
     public Function<HttpHeaders, HttpHeaders> responseHeadProcess() {
         return getDelegate().responseHeadProcess();
-    }
-
-    @Override
-    public void responseHeadProcess(Function<HttpHeaders, HttpHeaders> process) {
-        getDelegate().responseHeadProcess(process);
     }
 
     @Override

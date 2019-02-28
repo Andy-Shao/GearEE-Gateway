@@ -107,6 +107,14 @@ public class DefaultGearServerWebExchangeBuilder implements IGearBuilder {
         private final ServerHttpResponse response;
         @Nullable
         private final Mono<Principal> principalMono;
+        @Nullable
+        private final Function<Mono<byte[]>, Mono<byte[]>> requestBodyProcess;
+        @Nullable
+        private final Function<Mono<byte[]>, Mono<byte[]>> responseBodyProcess;
+        @Nullable
+        private final Function<HttpHeaders, HttpHeaders> requestHeadProcess;
+        @Nullable
+        private final Function<HttpHeaders, HttpHeaders> responesHeadProcess;
 
 
         public MutativeDecorator(IGearServerWebExchange delegate, @Nullable ServerHttpRequest request,
@@ -120,18 +128,10 @@ public class DefaultGearServerWebExchangeBuilder implements IGearBuilder {
             this.request = request;
             this.response = response;
             this.principalMono = principalMono;
-            if(Objects.nonNull(requestBodyProcess)) {
-                delegate.requestBodyProcess(requestBodyProcess);
-            }
-            if(Objects.nonNull(responseBodyProcess)) {
-                delegate.responseBodyProcess(responseBodyProcess);
-            }
-            if(Objects.nonNull(requestHeadProcess)) {
-                delegate.requestHeadProcess(requestHeadProcess);
-            }
-            if(Objects.nonNull(responseHeadProcess)) {
-                delegate.responseHeadProcess(responseHeadProcess);
-            }
+            this.requestBodyProcess = requestBodyProcess;
+            this.requestHeadProcess = requestHeadProcess;
+            this.responseBodyProcess = responseBodyProcess;
+            this.responesHeadProcess = responseHeadProcess;
         }
 
         @Override
@@ -149,5 +149,25 @@ public class DefaultGearServerWebExchangeBuilder implements IGearBuilder {
         public <T extends Principal> Mono<T> getPrincipal() {
             return (this.principalMono != null ? (Mono<T>) this.principalMono : getDelegate().getPrincipal());
         }
+
+		@Override
+		public Function<Mono<byte[]>, Mono<byte[]>> requestBodyProcess() {
+			return Objects.nonNull(this.requestBodyProcess) ? this.requestBodyProcess : getDelegate().requestBodyProcess();
+		}
+
+		@Override
+		public Function<HttpHeaders, HttpHeaders> requestHeadProcess() {
+			return Objects.nonNull(this.requestHeadProcess) ? this.requestHeadProcess : getDelegate().requestHeadProcess();
+		}
+
+		@Override
+		public Function<Mono<byte[]>, Mono<byte[]>> responseBodyProcess() {
+			return Objects.nonNull(this.responseBodyProcess) ? this.responseBodyProcess : getDelegate().responseBodyProcess();
+		}
+
+		@Override
+		public Function<HttpHeaders, HttpHeaders> responseHeadProcess() {
+			return Objects.nonNull(this.responesHeadProcess) ? this.responesHeadProcess : getDelegate().responseHeadProcess();
+		}
     }
 }

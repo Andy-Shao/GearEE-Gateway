@@ -22,33 +22,43 @@ public final class GearServerWebExchangeUtils {
     public static final String MODIFIED_HOST = "modified_host";
 	private GearServerWebExchangeUtils() {}
 	
-	public static final void addRequestHeadOperation(
+	public static final IGearServerWebExchange addRequestHeadOperation(
             IGearServerWebExchange exchange, Function<HttpHeaders, HttpHeaders> operation) {
         Function<HttpHeaders, HttpHeaders> requestHeadProcess = exchange.requestHeadProcess();
-        exchange.requestHeadProcess(httpHeaders -> {
-            HttpHeaders headers = requestHeadProcess.apply(httpHeaders);
-            return operation.apply(headers);
-        });
+ 
+        return exchange.mutate()
+        		.requestHeadProcess(httpHeaders -> {
+        			HttpHeaders headers = requestHeadProcess.apply(httpHeaders);
+                    return operation.apply(headers);
+        		})
+        		.build();
     }
 
-    public static final void addResponseHeadOperation(
+    public static final IGearServerWebExchange addResponseHeadOperation(
             IGearServerWebExchange exchange, Function<HttpHeaders, HttpHeaders> operation){
         Function<HttpHeaders, HttpHeaders> responseHeadProcess = exchange.responseHeadProcess();
-        exchange.responseHeadProcess(httpHeaders -> {
-            HttpHeaders headers = responseHeadProcess.apply(httpHeaders);
-            return operation.apply(headers);
-        });
+
+        return exchange.mutate()
+        		.responseHeadProcess(httpHeaders -> {
+        			HttpHeaders headers = responseHeadProcess.apply(httpHeaders);
+                    return operation.apply(headers);
+        		})
+        		.build();
     }
 
-    public static final void addRequestBodyOperation(
+    public static final IGearServerWebExchange addRequestBodyOperation(
             IGearServerWebExchange exchange, Function<Mono<byte[]>, Mono<byte[]>> operation) {
         Function<Mono<byte[]>, Mono<byte[]>> requestBodyProcess = exchange.requestBodyProcess();
-        exchange.requestBodyProcess(body -> operation.apply(requestBodyProcess.apply(body)));
+        return exchange.mutate()
+        		.requestBodyProcess(body -> operation.apply(requestBodyProcess.apply(body)))
+        		.build();
     }
 
-    public static final void addResponseBodyOperation(
+    public static final IGearServerWebExchange addResponseBodyOperation(
             IGearServerWebExchange exchange, Function<Mono<byte[]>, Mono<byte[]>> operation) {
         Function<Mono<byte[]>, Mono<byte[]>> responseBodyProcess = exchange.responseBodyProcess();
-        exchange.responseBodyProcess(body -> operation.apply(responseBodyProcess.apply(body)));
+        return exchange.mutate()
+        		.responseBodyProcess(body -> operation.apply(responseBodyProcess.apply(body)))
+        		.build();
     }
 }

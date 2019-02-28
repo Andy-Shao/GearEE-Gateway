@@ -30,9 +30,9 @@ public class LogGatewayFilterFactory extends AbstractGatewayFilterFactory<Abstra
         return (exchange, chain) -> {
             if(exchange instanceof IGearServerWebExchange) {
             	IGearServerWebExchange customExchange = (IGearServerWebExchange) exchange;
-                GearServerWebExchangeUtils.addRequestBodyOperation(customExchange, body ->
+                exchange = GearServerWebExchangeUtils.addRequestBodyOperation(customExchange, body ->
                         body.doOnNext(next -> log.info("Request body is - {}", new String(next))));
-                GearServerWebExchangeUtils.addResponseBodyOperation(customExchange, body ->
+                exchange = GearServerWebExchangeUtils.addResponseBodyOperation(customExchange, body ->
                         body.doOnNext(next -> log.info("Response body is - {}", new String(next))));
             }
             return chain.filter(exchange);

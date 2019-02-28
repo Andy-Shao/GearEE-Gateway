@@ -9,6 +9,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 
+import com.github.andyshao.gateway.core.impl.DefaultGearServerWebExchangeBuilder;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -24,18 +26,13 @@ import reactor.core.publisher.Mono;
  */
 public interface IGearServerWebExchange extends ServerWebExchange {
 	Function<Mono<byte[]>, Mono<byte[]>> requestBodyProcess();
-    void requestBodyProcess(Function<Mono<byte[]>, Mono<byte[]>> process);
     Function<HttpHeaders, HttpHeaders> requestHeadProcess();
-    void requestHeadProcess(Function<HttpHeaders, HttpHeaders> process);
     Function<Mono<byte[]>, Mono<byte[]>> responseBodyProcess();
-    void responseBodyProcess(Function<Mono<byte[]>, Mono<byte[]>> process);
     Function<HttpHeaders, HttpHeaders> responseHeadProcess();
-    void responseHeadProcess(Function<HttpHeaders, HttpHeaders> process);
 
     @Override
     default IGearBuilder mutate() {
-//        return new DefaultCustomServerWebExchangeBuilder(this);
-    	return null;
+    	return new DefaultGearServerWebExchangeBuilder(this);
     }
 
     /**
