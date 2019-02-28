@@ -18,6 +18,8 @@ import reactor.core.publisher.Mono;
  *
  */
 public final class GearServerWebExchangeUtils {
+    public static final String IS_ENABLE_MODIFY_HOST = "is_enable_modify_host";
+    public static final String MODIFIED_HOST = "modified_host";
 	private GearServerWebExchangeUtils() {}
 	
 	public static final void addRequestHeadOperation(
